@@ -56,10 +56,10 @@
 
 
 #####################################################
-# Görev 1:  Veriyi Hazırlama ve Analiz Etme
+# Veriyi Hazırlama ve Analiz Etme
 #####################################################
 
-# Adım 1:  ab_testing_data.xlsx adlı kontrol ve test grubu verilerinden oluşan veri setini okutunuz. Kontrol ve test grubu verilerini ayrı değişkenlere atayınız.
+#  ab_testing_data.xlsx adlı kontrol ve test grubu verilerinden oluşan veri setini okutunuz. Kontrol ve test grubu verilerini ayrı değişkenlere atayınız.
 import itertools
 import numpy as np
 import pandas as pd
@@ -79,7 +79,7 @@ df_control = pd.read_excel("/Users/sinemdokmeci/PycharmProjects/measurement_prob
 df_test = pd.read_excel("/Users/sinemdokmeci/PycharmProjects/measurement_problems/datasets/ab_testing.xlsx", sheet_name="Test Group")
 
 
-# Adım 2: Kontrol ve test grubu verilerini analiz ediniz.
+# Kontrol ve test grubu verilerini analiz ediniz.
 
 df_control.describe().T
 df_control.info()
@@ -87,7 +87,7 @@ df_control.info()
 df_test.describe().T
 df_test.info()
 
-# Adım 3: Analiz işleminden sonra concat metodunu kullanarak kontrol ve test grubu verilerini birleştiriniz.
+# Analiz işleminden sonra concat metodunu kullanarak kontrol ve test grubu verilerini birleştiriniz.
 
 df_control["Group Type"] = "Control"
 df_test["Group Type"] = "Test"
@@ -95,20 +95,20 @@ df = pd.concat([df_control, df_test], ignore_index=True)
 
 
 #####################################################
-# Görev 2:  A/B Testinin Hipotezinin Tanımlanması
+#  A/B Testinin Hipotezinin Tanımlanması
 #####################################################
 
-# Adım 1: Hipotezi tanımlayınız.
+#  Hipotezi tanımlayınız.
 #H0 : M1 = M2   -> Control ve Test'e ait Purchase değişkeni için ist. olarak anlamlı bir fark yoktur.
 # H1: M1 != M2  -> Control ve Test'e ait Purchase değişkeni için ist. olarak anlamlı bir fark vardır.
 
 
-# Adım 2: Kontrol ve test grubu için purchase(kazanç) ortalamalarını analiz ediniz
+# Kontrol ve test grubu için purchase(kazanç) ortalamalarını analiz ediniz
 df[df["Group Type"] == "Control"]["Purchase"].mean()
 df[df["Group Type"] == "Test"]["Purchase"].mean()
 
 #####################################################
-# GÖREV 3: Hipotez Testinin Gerçekleştirilmesi
+# Hipotez Testinin Gerçekleştirilmesi
 #####################################################
 
 ######################################################
@@ -116,7 +116,7 @@ df[df["Group Type"] == "Test"]["Purchase"].mean()
 ######################################################
 
 
-# Adım 1: Hipotez testi yapılmadan önce varsayım kontrollerini yapınız.Bunlar Normallik Varsayımı ve Varyans Homojenliğidir.
+# Hipotez testi yapılmadan önce varsayım kontrollerini yapınız.Bunlar Normallik Varsayımı ve Varyans Homojenliğidir.
 
 # Kontrol ve test grubunun normallik varsayımına uyup uymadığını Purchase değişkeni üzerinden ayrı ayrı test ediniz
 #Aşşağıda ki iki şekilde de yapılabilir
@@ -136,32 +136,22 @@ print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 # İki değer arasında levene testine göre p-value değeri 0,05'ten küçük olmadığından H0 reddedilemez.
 # İki değer arası Homojendir.
 
-# Adım 2: Normallik Varsayımı ve Varyans Homojenliği sonuçlarına göre uygun testi seçiniz
+# Normallik Varsayımı ve Varyans Homojenliği sonuçlarına göre uygun testi seçiniz
 #ttest_ind(df[df["Group Type"] == "Control"]["Purchase"],df[df["Group Type"] == "Test"]["Purchase"])[1] ---- Bu şekilde de yapılabilir.
 test_stat, pvalue = ttest_ind(df[df["Group Type"] == "Control"]["Purchase"],
                               df[df["Group Type"] == "Test"]["Purchase"],
                               equal_var=True)
 
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
-#İki değer arasında ttest_ind testine göre p-value değeri 0,05'ten küçük olmadığından H0 reddedilemez.
+# İki değer arasında ttest_ind testine göre p-value değeri 0,05'ten küçük olmadığından H0 reddedilemez.
 # İki değer arasında ist. olarak anlamlı bir fark yoktur.H0 hipotezi kabul edilir.
 
-# Adım 3: Test sonucunda elde edilen p_value değerini göz önünde bulundurarak kontrol ve test grubu satın alma
+# Test sonucunda elde edilen p_value değerini göz önünde bulundurarak kontrol ve test grubu satın alma
 # ortalamaları arasında istatistiki olarak anlamlı bir fark olup olmadığını yorumlayınız.
 
-#İki değer arasında ttest_ind testine göre p-value değeri 0,05'ten küçük olmadığından H0 reddedilemez.
+# İki değer arasında ttest_ind testine göre p-value değeri 0,05'ten küçük olmadığından H0 reddedilemez.
 # İki değer arasında ist. olarak anlamlı bir fark yoktur.H0 hipotezi kabul edilir.
 
-##############################################################
-# GÖREV 4 : Sonuçların Analizi
-##############################################################
-
-# Adım 1: Hangi testi kullandınız, sebeplerini belirtiniz.
-
-
-
-
-# Adım 2: Elde ettiğiniz test sonuçlarına göre müşteriye tavsiyede bulununuz.
 ## Bonus : Rekram tıklanma reklam görüntülenme sayısı
 control_click = df[df["Group Type"] == "Control"]["Click"].sum()
 test_click = df[df["Group Type"] == "Test"]["Click"].sum()
